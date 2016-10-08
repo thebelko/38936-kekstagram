@@ -1,12 +1,12 @@
 var getMessage = function (a, b) {
   var typeOfA = typeof a;
-  var typeOfAIsMassive = Array.isArray(a);
-  var typeOfBIsMassive = Array.isArray(b);
+  var typeOfAIsArray = Array.isArray(a);
+  var typeOfBIsArray = Array.isArray(b);
 
-  function getArraySum(array) {
+  function getArraySum(arrayName) {
     var amount = 0;
-    for (var i = 0; i < array.length; i++) {
-      amount += array[i];
+    for (var i = 0; i < arrayName.length; i++) {
+      amount += arrayName[i];
     }
     return amount;
   }
@@ -19,12 +19,12 @@ var getMessage = function (a, b) {
     }
   } else if (typeOfA === "number") {
       return "Переданное SVG-изображение содержит " + a + " объектов и " + b * 4 + " атрибутов";
-  } else if (typeOfAIsMassive && !typeOfBIsMassive) {
+  } else if (typeOfAIsArray && !typeOfBIsArray) {
     return "Количество красных точек во всех строчках изображения: " +  getArraySum(a);
-  } else if (typeOfAIsMassive && typeOfBIsMassive) {
+  } else if (typeOfAIsArray && typeOfBIsArray) {
     function getTwoArraysMultiplication(a, b) {
       var subsidiaryArray = [];
-      for (var i=0; i < a.length; i++) {
+      for (var i = 0; i < a.length; i++) {
         subsidiaryArray.push(a[i] * b[i]);
       }
       return subsidiaryArray;
