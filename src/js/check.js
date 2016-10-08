@@ -1,7 +1,7 @@
 var getMessage = function (a, b) {
   var typeOfA = typeof a;
-  var typeOfAMassive = Array.isArray(a);
-  var typeOfBMassive = Array.isArray(b);
+  var typeOfAIsMassive = Array.isArray(a);
+  var typeOfBIsMassive = Array.isArray(b);
 
   if (typeOfA === "boolean") {
     if (a === false) {
@@ -9,46 +9,37 @@ var getMessage = function (a, b) {
     } else {
       return "Переданное GIF-изображение анимировано и содержит " + b + " кадров";
     }
-  }
-
-  else if (typeOfA === "number"){
-      return "Переданное SVG-изображение содержит " + a + " объектов и " + b*4 + " атрибутов";
-  }
-
-  else if (typeOfAMassive && !typeOfBMassive) {
-    function getArraySum(typeOFAMassive){
+  } else if (typeOfA === "number") {
+      return "Переданное SVG-изображение содержит " + a + " объектов и " + b * 4 + " атрибутов";
+  } else if (typeOfAIsMassive && !typeOfBIsMassive) {
+    function getArraySum(a) {
       var amountOfRedPoints = 0;
-      for(var i = 0; i < typeOFAMassive.length; i++){
-        amountOfRedPoints += typeOFAMassive[i];
+      for (var i = 0; i < a.length; i++) {
+        amountOfRedPoints += a[i];
       }
       return amountOfRedPoints;
     }
     return "Количество красных точек во всех строчках изображения: " +  getArraySum(a);
-  }
-
-  else if (typeOfAMassive && typeOfBMassive) {
+  } else if (typeOfAIsMassive && typeOfBIsMassive) {
     var subsidiaryArray = [];
-    function getTwoArraysMultiplication(typeOfAMassive, typeOfBMassive) {
-      for(var i=0; i<typeOfAMassive.length; i++) {
-        subsidiaryArray.push(typeOfAMassive[i]*typeOfBMassive[i]);
+    function getTwoArraysMultiplication(a, b) {
+      for (var i=0; i<a.length; i++) {
+        subsidiaryArray.push(a[i]*b[i]);
       }
       return subsidiaryArray;
     }
 
     getTwoArraysMultiplication(a, b);
 
-    function getArraySum(subsidiaryArray){
+    function getArraySum(subsidiaryArray) {
       var artifactsSquare = 0;
-      for(var i = 0; i < subsidiaryArray.length; i++){
+      for (var i = 0; i < subsidiaryArray.length; i++) {
         artifactsSquare += subsidiaryArray[i];
       }
       return artifactsSquare;
     }
     return "Общая площадь артефактов сжатия: " + getArraySum(subsidiaryArray) + " пикселей";
-  }
-
-  else {
+  } else {
     return "Переданы некорректные данные";
   }
-
 };
