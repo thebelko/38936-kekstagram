@@ -83,10 +83,18 @@
       // Очистка изображения.
       this._ctx.clearRect(0, 0, this._container.width, this._container.height);
 
-      // Параметры линии.
-      // NB! Такие параметры сохраняются на время всего процесса отрисовки
-      // canvas'a поэтому важно вовремя поменять их, если нужно начать отрисовку
-      // чего-либо с другой обводкой.
+      // Сохранение состояния канваса.
+      this._ctx.save();
+
+      // Установка начальной точки системы координат в центр холста.
+      this._ctx.translate(this._container.width / 2, this._container.height / 2);
+
+      var displX = -(this._resizeConstraint.x + this._resizeConstraint.side / 2);
+      var displY = -(this._resizeConstraint.y + this._resizeConstraint.side / 2);
+      // Отрисовка изображения на холсте. Параметры задают изображение, которое
+      // нужно отрисовать и координаты его верхнего левого угла.
+      // Координаты задаются от центра холста.
+      this._ctx.drawImage(this._image, displX, displY);
 
       var constraintLineType = 'dotted';
 
@@ -105,6 +113,9 @@
           break;
 
         case 'dotted':
+
+          this._ctx.lineWidth = 6;
+          this._ctx.strokeStyle = 'transparent';
           var drawCircle = function(ctx, size, x, y) {
             ctx.beginPath();
             ctx.arc(size / 2 + x, size / 2 + y, 3, 0, Math.PI * 2);
@@ -142,19 +153,6 @@
           }
           break;
       }
-
-      // Сохранение состояния канваса.
-      this._ctx.save();
-
-      // Установка начальной точки системы координат в центр холста.
-      this._ctx.translate(this._container.width / 2, this._container.height / 2);
-
-      var displX = -(this._resizeConstraint.x + this._resizeConstraint.side / 2);
-      var displY = -(this._resizeConstraint.y + this._resizeConstraint.side / 2);
-      // Отрисовка изображения на холсте. Параметры задают изображение, которое
-      // нужно отрисовать и координаты его верхнего левого угла.
-      // Координаты задаются от центра холста.
-      this._ctx.drawImage(this._image, displX, displY);
 
       // Отрисовка прямоугольника, обозначающего область изображения после
       // кадрирования. Координаты задаются от центра.
