@@ -91,12 +91,12 @@
       // Толщина линии.
       this._ctx.lineWidth = 6;
       // Цвет обводки.
-      this._ctx.strokeStyle = '#ffe753';
+      this._ctx.strokeStyle = 'transparent';
       // Размер штрихов. Первый элемент массива задает длину штриха, второй
       // расстояние между соседними штрихами.
-      this._ctx.setLineDash([15, 10]);
+      // this._ctx.setLineDash([15, 10]);
       // Смещение первого штриха от начала линии.
-      this._ctx.lineDashOffset = 7;
+      // this._ctx.lineDashOffset = 7;
 
       // Сохранение состояния канваса.
       this._ctx.save();
@@ -119,25 +119,60 @@
           this._resizeConstraint.side - this._ctx.lineWidth / 2,
           this._resizeConstraint.side - this._ctx.lineWidth / 2);
 
+      var drawCircle = function(ctx, size, x, y) {
+        ctx.beginPath();
+        ctx.arc(size / 2 + x, size / 2 + y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      };
+
+      this._ctx.fillStyle = '#ffe753';
+
+      var x = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth;
+      var y = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth;
+      while (x < this._resizeConstraint.side / 2 - this._ctx.lineWidth) {
+        drawCircle(this._ctx, 8, x, y);
+        x += 8;
+      }
+
+      x = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth;
+      y = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth;
+      while (y < this._resizeConstraint.side / 2 - this._ctx.lineWidth) {
+        drawCircle(this._ctx, 8, x, y);
+        y += 8;
+      }
+
+      x = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth;
+      y = this._resizeConstraint.side / 2 - this._ctx.lineWidth * 2;
+      while (x < this._resizeConstraint.side / 2 - this._ctx.lineWidth) {
+        drawCircle(this._ctx, 8, x, y);
+        x += 8;
+      }
+
+      x = this._resizeConstraint.side / 2 - this._ctx.lineWidth * 2;
+      y = (-this._resizeConstraint.side / 2) - this._ctx.lineWidth;
+      while (y < this._resizeConstraint.side / 2 - this._ctx.lineWidth) {
+        drawCircle(this._ctx, 8, x, y);
+        y += 8;
+      }
 
       this._ctx.fillStyle = 'rgba(0,0,0,.8)';
       //слева прямоугольник
       this._ctx.fillRect(
         -this._resizeConstraint.side / 2 - this._ctx.lineWidth,
-        this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
+        this._resizeConstraint.side / 2 - this._ctx.lineWidth,
         -this._container.width,
         -this._container.height);
 
       //снизу прямоугольник
       this._ctx.fillRect(
-        this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
-        this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
+        this._resizeConstraint.side / 2 - this._ctx.lineWidth,
+        this._resizeConstraint.side / 2 - this._ctx.lineWidth,
         -this._container.width,
         this._container.height);
 
       //справа прямоугольник
       this._ctx.fillRect(
-        this._resizeConstraint.side / 2 - this._ctx.lineWidth / 2,
+        this._resizeConstraint.side / 2 - this._ctx.lineWidth,
         (-this._resizeConstraint.side / 2) - this._ctx.lineWidth,
         this._container.width,
         this._container.height);
