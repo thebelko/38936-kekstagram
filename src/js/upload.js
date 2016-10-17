@@ -183,6 +183,8 @@
           resizeForm.classList.remove('invisible');
 
           hideMessage();
+
+          resizeFormIsValid();
         };
 
         fileReader.readAsDataURL(element.files[0]);
@@ -191,7 +193,6 @@
         showMessage(Action.ERROR);
       }
     }
-    resizeFormIsValid();
   };
 
   /**
