@@ -71,39 +71,30 @@
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
-  var resizeFormIsValid = function() {
-    var coordinateX = parseInt(document.getElementById('resize-x').value);
-    var coordinateY = parseInt(document.getElementById('resize-y').value);
-    var newImageWidth = parseInt(document.getElementById('resize-size').value);
+  var coordinateX = document.getElementById('resize-x');
+  var coordinateY = document.getElementById('resize-y');
+  var newImageWidth = document.getElementById('resize-size');
 
+  var submitButton = document.getElementById('resize-fwd');
+
+
+  var setNewImageConstraint = function(inputX, inputY, inputSize, uploadWidth, uploadHeight) {
+    coordinateX.min = 1;
+    coordinateY.min = 1;
+    if (uploadWidth >= parseInt(inputX.value, 10) + parseInt(inputSize.value, 10) || uploadHeight >= parseInt(inputY.value, 10) + parseInt(inputSize.value, 10)) {
+      submitButton.disabled = false;
+      return true;
+    } else if (uploadWidth < parseInt(inputX.value, 10) + parseInt(inputSize.value, 10) && uploadHeight < parseInt(inputY.value, 10) + parseInt(inputSize.value, 10)) {
+      submitButton.disabled = true;
+      return false;
+    } return false;
+  };
+
+  var resizeFormIsValid = function() {
     var uploadImageWidth = currentResizer._image.naturalWidth;
     var uploadImageHeight = currentResizer._image.naturalHeight;
 
-
-    var setNewImageConstraint = function (inputX, inputY, inputSize, uploadWidth, uploadHeight) {
-      if (uploadWidth > inputX + inputSize || uploadHeight > inputY + inputSize) {
-        return true;
-      } else if (uploadWidth < inputX + inputSize && uploadHeight < inputY + inputSize) {
-        var submitButton = document.getElementById('resize-fwd');
-        submitButton.disabled = true;
-      }
-    };
-
-    document.getElementById('resize-x').oninput = function() {
-      setNewImageConstraint(coordinateX, coordinateY, newImageWidth, uploadImageWidth, uploadImageHeight);
-    };
-
-    document.getElementById('resize-y').oninput = function() {
-      setNewImageConstraint(coordinateX, coordinateY, newImageWidth, uploadImageWidth, uploadImageHeight);
-    };
-
-    document.getElementById('resize-size').oninput = function() {
-      setNewImageConstraint(coordinateX, coordinateY, newImageWidth, uploadImageWidth, uploadImageHeight);
-    };
-
-    setNewImageConstraint(coordinateX, coordinateY, newImageWidth, uploadImageWidth, uploadImageHeight);
-
-
+    return setNewImageConstraint(coordinateX, coordinateY, newImageWidth, uploadImageWidth, uploadImageHeight);
 
   };
 
@@ -238,6 +229,17 @@
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
     }
+  };
+  coordinateX.oninput = function() {
+    resizeFormIsValid();
+  };
+
+  coordinateY.oninput = function() {
+    resizeFormIsValid();
+  };
+
+  newImageWidth.oninput = function() {
+    resizeFormIsValid();
   };
 
   /**
