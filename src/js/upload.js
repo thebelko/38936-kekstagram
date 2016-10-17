@@ -77,14 +77,14 @@
 
   var submitButton = document.getElementById('resize-fwd');
 
-
   var setNewImageConstraint = function(inputX, inputY, inputSize, uploadWidth, uploadHeight) {
-    coordinateX.min = 1;
-    coordinateY.min = 1;
-    if (uploadWidth >= parseInt(inputX.value, 10) + parseInt(inputSize.value, 10) || uploadHeight >= parseInt(inputY.value, 10) + parseInt(inputSize.value, 10)) {
+    coordinateX.min = 0;
+    coordinateY.min = 0;
+    newImageWidth.min = 25;
+    if (uploadWidth >= parseInt(inputX.value, 10) + parseInt(inputSize.value, 10) && uploadHeight >= parseInt(inputY.value, 10) + parseInt(inputSize.value, 10) && parseInt(coordinateX.value, 10) >= 0 && parseInt(coordinateY.value, 10) >= 0 && parseInt(newImageWidth.value, 10) >= 25) {
       submitButton.disabled = false;
       return true;
-    } else if (uploadWidth < parseInt(inputX.value, 10) + parseInt(inputSize.value, 10) && uploadHeight < parseInt(inputY.value, 10) + parseInt(inputSize.value, 10)) {
+    } else if (uploadWidth < parseInt(inputX.value, 10) + parseInt(inputSize.value, 10) || uploadHeight < parseInt(inputY.value, 10) + parseInt(inputSize.value, 10) || parseInt(coordinateX.value, 10) < 0 || parseInt(coordinateY.value, 10) < 0 || parseInt(newImageWidth.value, 10) < 0) {
       submitButton.disabled = true;
       return false;
     } return false;
@@ -191,6 +191,7 @@
         showMessage(Action.ERROR);
       }
     }
+    resizeFormIsValid();
   };
 
   /**
