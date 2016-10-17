@@ -72,7 +72,39 @@
    * @return {boolean}
    */
   var resizeFormIsValid = function() {
-    return true;
+    var coordinateX = parseInt(document.getElementById('resize-x').value);
+    var coordinateY = parseInt(document.getElementById('resize-y').value);
+    var newImageWidth = parseInt(document.getElementById('resize-size').value);
+
+    var uploadImageWidth = currentResizer._image.naturalWidth;
+    var uploadImageHeight = currentResizer._image.naturalHeight;
+
+
+    var setNewImageConstraint = function (inputX, inputY, inputSize, uploadWidth, uploadHeight) {
+      if (uploadWidth > inputX + inputSize || uploadHeight > inputY + inputSize) {
+        return true;
+      } else if (uploadWidth < inputX + inputSize && uploadHeight < inputY + inputSize) {
+        var submitButton = document.getElementById('resize-fwd');
+        submitButton.disabled = true;
+      }
+    };
+
+    document.getElementById('resize-x').oninput = function() {
+      setNewImageConstraint(coordinateX, coordinateY, newImageWidth, uploadImageWidth, uploadImageHeight);
+    };
+
+    document.getElementById('resize-y').oninput = function() {
+      setNewImageConstraint(coordinateX, coordinateY, newImageWidth, uploadImageWidth, uploadImageHeight);
+    };
+
+    document.getElementById('resize-size').oninput = function() {
+      setNewImageConstraint(coordinateX, coordinateY, newImageWidth, uploadImageWidth, uploadImageHeight);
+    };
+
+    setNewImageConstraint(coordinateX, coordinateY, newImageWidth, uploadImageWidth, uploadImageHeight);
+
+
+
   };
 
   /**
