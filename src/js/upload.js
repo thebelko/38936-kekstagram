@@ -81,10 +81,21 @@
     coordinateX.min = 0;
     coordinateY.min = 0;
     newImageWidth.min = 25;
-    if (uploadWidth >= parseInt(inputX.value, 10) + parseInt(inputSize.value, 10) && uploadHeight >= parseInt(inputY.value, 10) + parseInt(inputSize.value, 10) && parseInt(coordinateX.value, 10) >= 0 && parseInt(coordinateY.value, 10) >= 0 && parseInt(newImageWidth.value, 10) >= 25) {
+    if (uploadWidth >= parseInt(inputX.value, 10) + parseInt(inputSize.value, 10) &&
+      uploadHeight >= parseInt(inputY.value, 10) + parseInt(inputSize.value, 10) &&
+      parseInt(coordinateX.value, 10) >= 0 &&
+      parseInt(coordinateY.value, 10) >= 0 &&
+      parseInt(newImageWidth.value, 10) >= 25) {
       submitButton.disabled = false;
       return true;
-    } else if (uploadWidth < parseInt(inputX.value, 10) + parseInt(inputSize.value, 10) || uploadHeight < parseInt(inputY.value, 10) + parseInt(inputSize.value, 10) || parseInt(coordinateX.value, 10) < 0 || parseInt(coordinateY.value, 10) < 0 || parseInt(newImageWidth.value, 10) < 0) {
+    } else if (uploadWidth < parseInt(inputX.value, 10) + parseInt(inputSize.value, 10) ||
+      uploadHeight < parseInt(inputY.value, 10) + parseInt(inputSize.value, 10) ||
+      parseInt(coordinateX.value, 10) < 0 ||
+      parseInt(coordinateY.value, 10) < 0 ||
+      parseInt(newImageWidth.value, 10) < 0 ||
+      coordinateX.value === '' ||
+      coordinateY.value === '' ||
+      newImageWidth.value === '') {
       submitButton.disabled = true;
       return false;
     } return false;
