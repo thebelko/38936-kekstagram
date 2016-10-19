@@ -71,42 +71,56 @@
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
-  var coordinateX = document.getElementById('resize-x');
-  var coordinateY = document.getElementById('resize-y');
-  var newImageWidth = document.getElementById('resize-size');
+  var coordinateXElement = document.getElementById('resize-x');
+  var coordinateYElement = document.getElementById('resize-y');
+  var resizeWidthElement = document.getElementById('resize-size');
 
   var submitButton = document.getElementById('resize-fwd');
 
-  var setNewImageConstraint = function(inputX, inputY, inputSize, uploadWidth, uploadHeight) {
-    coordinateX.min = 0;
-    coordinateY.min = 0;
-    newImageWidth.min = 25;
-    if (uploadWidth >= parseInt(inputX.value, 10) + parseInt(inputSize.value, 10) &&
-      uploadHeight >= parseInt(inputY.value, 10) + parseInt(inputSize.value, 10) &&
-      parseInt(coordinateX.value, 10) >= 0 &&
-      parseInt(coordinateY.value, 10) >= 0 &&
-      parseInt(newImageWidth.value, 10) >= 25) {
-      submitButton.disabled = false;
-      return true;
-    } else if (uploadWidth < parseInt(inputX.value, 10) + parseInt(inputSize.value, 10) ||
-      uploadHeight < parseInt(inputY.value, 10) + parseInt(inputSize.value, 10) ||
-      parseInt(coordinateX.value, 10) < 0 ||
-      parseInt(coordinateY.value, 10) < 0 ||
-      parseInt(newImageWidth.value, 10) < 0 ||
-      coordinateX.value === '' ||
-      coordinateY.value === '' ||
-      newImageWidth.value === '') {
-      submitButton.disabled = true;
-      return false;
-    } return false;
-  };
+  var setNewImageConstraint = function() {
+    coordinateXElement.min = 0;
+    coordinateYElement.min = 0;
+    resizeWidthElement.min = 25;
 
-  var resizeFormIsValid = function() {
+    var coordinateXValue = coordinateXElement.value;
+    var coordinateYValue = coordinateYElement.value;
+    var resizeWidthValue = resizeWidthElement.value;
+
+    var coordinateX = +coordinateXElement.value;
+    var coordinateY = +coordinateYElement.value;
+    var resizeWidth = +resizeWidthElement.value;
+
     var uploadImageWidth = currentResizer._image.naturalWidth;
     var uploadImageHeight = currentResizer._image.naturalHeight;
 
-    return setNewImageConstraint(coordinateX, coordinateY, newImageWidth, uploadImageWidth, uploadImageHeight);
+    if (uploadImageWidth <= coordinateX + resizeWidth) {
+      return false;
+    }
 
+    if (uploadImageHeight < coordinateY + resizeWidth) {
+      return false;
+    }
+
+    if (coordinateX < 0 || coordinateY < 0 || resizeWidth < 0) {
+      return false;
+    }
+
+    if (coordinateXValue === '' || coordinateYValue === '' || resizeWidthValue === '') {
+      return false;
+    }
+
+    return true;
+  };
+
+  var resizeFormIsValid = function() {
+
+    if (setNewImageConstraint()) {
+      submitButton.removeAttribute('disabled');
+      return true;
+    } else {
+      submitButton.setAttribute('disabled', 'disabled');
+      return false;
+    }
   };
 
   /**
@@ -243,15 +257,15 @@
       filterForm.classList.remove('invisible');
     }
   };
-  coordinateX.oninput = function() {
+  coordinateXElement.oninput = function() {
     resizeFormIsValid();
   };
 
-  coordinateY.oninput = function() {
+  coordinateYElement.oninput = function() {
     resizeFormIsValid();
   };
 
-  newImageWidth.oninput = function() {
+  resizeWidthElement.oninput = function() {
     resizeFormIsValid();
   };
 
