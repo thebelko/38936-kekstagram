@@ -71,8 +71,56 @@
    * Проверяет, валидны ли данные, в форме кадрирования.
    * @return {boolean}
    */
-  var resizeFormIsValid = function() {
+  var coordinateXElement = document.getElementById('resize-x');
+  var coordinateYElement = document.getElementById('resize-y');
+  var resizeWidthElement = document.getElementById('resize-size');
+
+  var submitButton = document.getElementById('resize-fwd');
+
+  var setNewImageConstraint = function() {
+    coordinateXElement.min = 0;
+    coordinateYElement.min = 0;
+    resizeWidthElement.min = 25;
+
+    var coordinateXValue = coordinateXElement.value;
+    var coordinateYValue = coordinateYElement.value;
+    var resizeWidthValue = resizeWidthElement.value;
+
+    var coordinateX = +coordinateXElement.value;
+    var coordinateY = +coordinateYElement.value;
+    var resizeWidth = +resizeWidthElement.value;
+
+    var uploadImageWidth = currentResizer._image.naturalWidth;
+    var uploadImageHeight = currentResizer._image.naturalHeight;
+
+    if (uploadImageWidth <= coordinateX + resizeWidth) {
+      return false;
+    }
+
+    if (uploadImageHeight < coordinateY + resizeWidth) {
+      return false;
+    }
+
+    if (coordinateX < 0 || coordinateY < 0 || resizeWidth < 0) {
+      return false;
+    }
+
+    if (coordinateXValue === '' || coordinateYValue === '' || resizeWidthValue === '') {
+      return false;
+    }
+
     return true;
+  };
+
+  var resizeFormIsValid = function() {
+
+    if (setNewImageConstraint()) {
+      submitButton.removeAttribute('disabled');
+      return true;
+    } else {
+      submitButton.setAttribute('disabled', 'disabled');
+      return false;
+    }
   };
 
   /**
@@ -160,6 +208,8 @@
           resizeForm.classList.remove('invisible');
 
           hideMessage();
+
+          resizeFormIsValid();
         };
 
         fileReader.readAsDataURL(element.files[0]);
@@ -206,6 +256,17 @@
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
     }
+  };
+  coordinateXElement.oninput = function() {
+    resizeFormIsValid();
+  };
+
+  coordinateYElement.oninput = function() {
+    resizeFormIsValid();
+  };
+
+  resizeWidthElement.oninput = function() {
+    resizeFormIsValid();
   };
 
   /**
