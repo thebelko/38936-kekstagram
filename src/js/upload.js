@@ -78,10 +78,6 @@
   var submitButton = document.getElementById('resize-fwd');
 
   var setNewImageConstraint = function() {
-    coordinateXElement.min = 0;
-    coordinateYElement.min = 0;
-    resizeWidthElement.min = 25;
-
     var coordinateXValue = coordinateXElement.value;
     var coordinateYValue = coordinateYElement.value;
     var resizeWidthValue = resizeWidthElement.value;
@@ -92,6 +88,8 @@
 
     var uploadImageWidth = currentResizer._image.naturalWidth;
     var uploadImageHeight = currentResizer._image.naturalHeight;
+
+    resizeWidthElement.min = 25;
 
     if (uploadImageWidth <= coordinateX + resizeWidth) {
       return false;
@@ -207,6 +205,10 @@
           uploadForm.classList.add('invisible');
           resizeForm.classList.remove('invisible');
 
+          coordinateXElement.value = 0;
+          coordinateYElement.value = 0;
+          resizeWidthElement.value = 150;
+
           hideMessage();
 
           resizeFormIsValid();
@@ -253,6 +255,11 @@
 
       filterImage.src = image;
 
+      var filterFromCookie = Cookies.get('upload-filter');
+      filterImage.classList.add(filterFromCookie);
+      document.getElementById('upload-' + filterFromCookie);
+      document.getElementById('upload-' + filterFromCookie).setAttribute('checked', 'checked');
+
       resizeForm.classList.add('invisible');
       filterForm.classList.remove('invisible');
     }
@@ -285,6 +292,7 @@
    * записав сохраненный фильтр в cookie.
    * @param {Event} evt
    */
+
   filterForm.onsubmit = function(evt) {
     evt.preventDefault();
 
@@ -293,7 +301,31 @@
 
     filterForm.classList.add('invisible');
     uploadForm.classList.remove('invisible');
+
   };
+
+  var nowDate = new Date();
+  var dateOfBirth = new Date('2016-12-09');
+
+  var nowDay = nowDate.getDate();
+  var nowMonth = nowDate.getMonth();
+
+  var countDateOfBirth = function() {
+    if (nowMonth === 11) {
+      if (nowDay > 9) {
+        dateOfBirth.setFullYear(nowDate.getFullYear());
+        return dateOfBirth;
+      } else {
+        dateOfBirth.setFullYear(nowDate.getFullYear() - 1);
+        return dateOfBirth;
+      }
+    } else {
+      dateOfBirth.setFullYear(nowDate.getFullYear() - 1);
+      return dateOfBirth;
+    }
+  };
+
+  countDateOfBirth();
 
   /**
    * Обработчик изменения фильтра. Добавляет класс из filterMap соответствующий
@@ -320,8 +352,13 @@
     // убрать предыдущий примененный класс. Для этого нужно или запоминать его
     // состояние или просто перезаписывать.
     filterImage.className = 'filter-image-preview ' + filterMap[selectedFilter];
+
+    var intervalBetweenDates = Math.round((nowDate - dateOfBirth) / (24 * 60 * 60 * 1000));
+    Cookies.set('upload-filter', filterMap[selectedFilter], { expires: intervalBetweenDates });
   };
 
   cleanupResizer();
   updateBackground();
 })();
+
+
