@@ -1,4 +1,5 @@
 /* global Resizer: true */
+/* global Cookies */
 
 /**
  * @fileoverview
@@ -257,7 +258,6 @@
 
       var filterFromCookie = Cookies.get('upload-filter');
       filterImage.classList.add(filterFromCookie);
-      document.getElementById('upload-' + filterFromCookie);
       document.getElementById('upload-' + filterFromCookie).setAttribute('checked', 'checked');
 
       resizeForm.classList.add('invisible');
@@ -311,8 +311,8 @@
   var nowMonth = nowDate.getMonth();
 
   var countDateOfBirth = function() {
-    if (nowMonth === 11) {
-      if (nowDay > 9) {
+    if (nowMonth === dateOfBirth.getMonth()) {
+      if (nowDay > dateOfBirth.getDate()) {
         dateOfBirth.setFullYear(nowDate.getFullYear());
         return dateOfBirth;
       } else {
