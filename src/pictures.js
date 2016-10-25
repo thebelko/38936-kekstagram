@@ -128,18 +128,19 @@ var getPictureElement = function(picture) {
   var photoImage = new Image(182, 182);
   var photoImageTimeout = null;
 
-  photoImage.onload = function () {
+  photoImage.onload = function() {
     clearTimeout(photoImageTimeout);
     imageElement.src = picture.url;
   };
 
-  photoImage.onerror = function () {
+  photoImage.onerror = function() {
+    clearTimeout(photoImageTimeout);
     imageElement.classList.add('picture-load-failure');
   };
 
   photoImage.src = picture.url;
 
-  photoImageTimeout = setTimeout(function () {
+  photoImageTimeout = setTimeout(function() {
     imageElement.classList.add('picture-load-failure');
   }, IMAGE_LOAD_TIMEOUT);
 
