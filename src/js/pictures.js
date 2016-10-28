@@ -1,17 +1,20 @@
 'use strict';
 
-var LOAD_URL = 'http://localhost:1507/api/pictures?callback=JSONPCallback';
+var LOAD_URL = 'http://localhost:1507/api/pictures';
 
 var filtersElement = document.querySelector('.filters');
 
-var loadJSOPData = function(url, callback) {
-  var scriptElement = document.createElement('script');
-  scriptElement.src = url;
-  document.body.appendChild(scriptElement);
+var loadJSOPData = function(url, callback, callbackName) {
+    callbackName = 'cb' + Date.now();
 
-  if (typeof callback === 'function') {
-    callback();
-  }
+  window[callbackName] = function(data) {
+    callback(data);
+    delete window[callbackName];
+  };
+
+  var scriptElement = document.createElement('script');
+  scriptElement.src = url + '?callback=' + callbackName;
+  document.body.appendChild(scriptElement);
 };
 
 var containerForPhotos = document.querySelector('.pictures');
@@ -48,20 +51,14 @@ var getPictureElement = function(picture) {
   return pictureElement;
 };
 
-var renderPictures = function(pictures) {
-  pictures.forEach(function(picture) {
+var renderPictures = function(picturesArray) {
+  picturesArray.forEach(function(picture) {
     containerForPhotos.appendChild(getPictureElement(picture));
   });
 
   filtersElement.classList.remove('hidden');
 };
 
-var loadPicturesOnPage = function() {
-  window.JSONPCallback = function(data) {
-    var pictures = data;
-    renderPictures(pictures);
-  };
-};
-
 filtersElement.classList.add('hidden');
-loadJSOPData(LOAD_URL, loadPicturesOnPage);
+
+loadJSOPData(LOAD_URL, renderPictures);
