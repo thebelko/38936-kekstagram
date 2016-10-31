@@ -4,8 +4,8 @@ var LOAD_URL = 'http://localhost:1507/api/pictures';
 
 var filtersElement = document.querySelector('.filters');
 
-var loadJSOPData = function(url, callback, callbackName) {
-  callbackName = 'cb' + Date.now();
+var loadJSOPData = function(url, callback) {
+  var callbackName = 'cb' + Date.now();
 
   window[callbackName] = function(data) {
     callback(data);
