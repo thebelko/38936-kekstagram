@@ -1,5 +1,7 @@
 'use strict';
 
+var galleryBlock = require('./gallery');
+
 var template = document.querySelector('#picture-template');
 var templateContainer = 'content' in template ? template.content : template;
 
@@ -29,6 +31,11 @@ module.exports = function getPictureElement(picture) {
   photoImageTimeout = setTimeout(function() {
     imageElement.classList.add('picture-load-failure');
   }, IMAGE_LOAD_TIMEOUT);
+
+  pictureElement.onclick = function() {
+    event.preventDefault();
+    galleryBlock.show(1);
+  };
 
   return pictureElement;
 };

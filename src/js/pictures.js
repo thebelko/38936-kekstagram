@@ -2,6 +2,7 @@
 
 var loadJSOPData = require('./load');
 var getPictureElement = require('./picture');
+var galleryBlock = require('./gallery');
 
 var LOAD_URL = 'http://localhost:1507/api/pictures';
 var containerForPhotos = document.querySelector('.pictures');
@@ -11,10 +12,11 @@ module.exports = function() {
   filtersElement.classList.add('hidden');
 
   loadJSOPData(LOAD_URL, function(picturesArray) {
-    picturesArray.forEach(function(picture) {
+    picturesArray.forEach(function(picture, i) {
       containerForPhotos.appendChild(getPictureElement(picture));
     });
     filtersElement.classList.remove('hidden');
+    galleryBlock.setPictures(picturesArray);
   }
   );
 };
