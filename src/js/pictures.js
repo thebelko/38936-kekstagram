@@ -12,8 +12,8 @@ module.exports = function() {
   filtersElement.classList.add('hidden');
 
   loadJSOPData(LOAD_URL, function(picturesArray) {
-    picturesArray.forEach(function(picture, i) {
-      containerForPhotos.appendChild(getPictureElement(picture));
+    picturesArray.forEach(function(picture, pictureIndex) {
+      containerForPhotos.appendChild(getPictureElement(picture, pictureIndex));
     });
     filtersElement.classList.remove('hidden');
     galleryBlock.setPictures(picturesArray);
