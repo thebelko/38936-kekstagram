@@ -7,7 +7,21 @@ var templateContainer = 'content' in template ? template.content : template;
 
 var IMAGE_LOAD_TIMEOUT = 10000;
 
-module.exports = function getPictureElement(picture, pictureIndex) {
+var Picture = function(picture, pictureIndex) {
+  this.data = picture;
+  this.element = this.getPictureElement(picture, pictureIndex);
+
+  this.element.onclick = function() {
+    event.preventDefault();
+    galleryBlock.show(pictureIndex);
+  };
+
+  this.remove = function() {
+    this.element.onclick = null;
+  };
+};
+
+Picture.prototype.getPictureElement = function(picture) {
   var pictureElement = templateContainer.querySelector('.picture').cloneNode(true);
   pictureElement.querySelector('.picture-comments').textContent = picture.comments;
   pictureElement.querySelector('.picture-likes').textContent = picture.likes;
@@ -32,10 +46,7 @@ module.exports = function getPictureElement(picture, pictureIndex) {
     imageElement.classList.add('picture-load-failure');
   }, IMAGE_LOAD_TIMEOUT);
 
-  pictureElement.onclick = function() {
-    event.preventDefault();
-    galleryBlock.show(pictureIndex);
-  };
-
   return pictureElement;
 };
+
+module.exports = Picture;
